@@ -1,28 +1,30 @@
 from turtle import Turtle
 
-class Paddle:
-    def __init__(self):
-        self.paddle_parts = []
-        self.positions = [(-380, 0), (-380, -20), (-380, -40)]
-        self.create_paddle()
+class Paddle():
+    def __init__(self, pos_x, pos_y):
+        self.create_paddle(pos_x, pos_y)
 
-    def create_paddle(self):
-        for part in range(3):
-            paddle = Turtle()
-            paddle.shape("square")
-            paddle.color("white")
-            paddle.penup()
-            paddle.goto(self.positions[part])
-            self.paddle_parts.append(paddle)
+    def create_paddle(self, pos_x, pos_y):
+        paddle = Turtle()
+        paddle.shape("square")
+        paddle.color("white")
+        paddle.penup()
+        paddle.turtlesize(stretch_wid=4, stretch_len=.8)
+        paddle.goto(pos_x, pos_y)
+        self.paddle = paddle
 
     def move_up(self):
-        y = self.paddle_parts[0].ycor()
-        if y < 280:
-            for part in self.paddle_parts:
-                part.sety(part.ycor() + 20)
+        self.paddle.goto(self.paddle.xcor(), self.paddle.ycor() + 20)
 
     def move_down(self):
-        y = self.paddle_parts[-1].ycor()
-        if y - 280:
-            for part in self.paddle_parts:
-                part.sety(part.ycor() - 20)
+        self.paddle.goto(self.paddle.xcor(), self.paddle.ycor() - 20)
+
+    def computer_play(self, ball):
+        if ball.ball.ycor() > self.paddle.ycor():
+            self.move_up()
+        elif ball.ball.ycor() < self.paddle.ycor():
+            self.move_down()
+
+    def reset_paddle(self, pos_x, pos_y):
+        self.paddle.goto(pos_x, pos_y)
+

@@ -1,26 +1,52 @@
-from turtle import Screen
+from scoreboard import Scoreboard
 from paddles import Paddle
+from ball import Ball
 import time
 
-screen = Screen()
-screen.colormode(255)
-screen.tracer(0)
-screen.setup(width=800, height=600)
-screen.bgcolor("black")
-screen.title("Pong")
+scoreboard = Scoreboard()
 
 game_is_on = True
+MAX_SCORE = 3
 
-paddle = Paddle()
+player_paddle = Paddle(pos_x=-360, pos_y=0)
+computer_paddle = Paddle(pos_x=360, pos_y=0)
+scoreboard.control_paddle(player_paddle)
 
-screen.listen()
-screen.onkey(key="Up", fun=paddle.move_up)
-screen.onkey(key="Down", fun=paddle.move_down)
+ball = Ball()
+
+def game_reset():
+    ball.reset_ball()
+    player_paddle.reset_paddle(pos_x=-360, pos_y=0)
+    computer_paddle.reset_paddle(pos_x=360, pos_y=0)
 
 while game_is_on:
-    screen.update()
-    time.sleep(0.1)
+    scoreboard.screen_update()
+    ball.ball_move()
+    time.sleep(.01)
+
+    #move computer paddle
+    computer_paddle.computer_play(ball)
+
+    # detect collision with wall, count points and reset game
+    if scoreboard.player_score < MAX_SCORE and scoreboard.computer_score < MAX_SCORE:
+        if ball.left_wall_collision() is True:
+            scoreboard.player_score += 1
+            game_reset()
+
+        elif ball.right_wall_collision() is True:
+            scoreboard.computer_score += 1
+            game_reset()
+    else:
+        game_is_on = False
 
 
+    #detect collision with paddle
+    if (ball.ball.xcor() > 340 and ball.ball.xcor() < 350) and (
+            ball.ball.ycor() < computer_paddle.paddle.ycor() + 40 and ball.ball.ycor() > computer_paddle.paddle.ycor() - 40):
+        ball.x_speed *= -1
 
-screen.exitonclick()
+    if (ball.ball.xcor() < -340 and ball.ball.xcor() > -350) and (
+            ball.ball.ycor() < player_paddle.paddle.ycor() + 40 and ball.ball.ycor() > player_paddle.paddle.ycor() - 40):
+        ball.x_speed *= -1
+
+scoreboard.exitonclick()
