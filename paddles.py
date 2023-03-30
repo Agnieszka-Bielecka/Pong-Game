@@ -27,4 +27,3 @@ class Paddle():
 
     def reset_paddle(self, pos_x, pos_y):
         self.paddle.goto(pos_x, pos_y)
-

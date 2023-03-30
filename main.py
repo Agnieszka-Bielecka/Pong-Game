@@ -6,7 +6,7 @@ import time
 scoreboard = Scoreboard()
 
 game_is_on = True
-MAX_SCORE = 3
+MAX_SCORE = 1
 
 player_paddle = Paddle(pos_x=-360, pos_y=0)
 computer_paddle = Paddle(pos_x=360, pos_y=0)
@@ -38,6 +38,9 @@ while game_is_on:
             game_reset()
     else:
         game_is_on = False
+        ball.ball_hide()
+        scoreboard.final_result()
+
 
 
     #detect collision with paddle
@@ -50,3 +53,5 @@ while game_is_on:
         ball.x_speed *= -1
 
 scoreboard.exitonclick()
+
+# TODO: get rid of white screen before program starts to work
