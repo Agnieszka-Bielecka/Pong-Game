@@ -8,7 +8,9 @@ FONT = ("Consolas", 40, "normal")
 
 class Scoreboard():
     def __init__(self):
-        #points
+        self.screen = Screen()
+        self.screen.tracer(0)
+        self.screen.bgcolor("black")
         self.player_score = 0
         self.computer_score = 0
         self.all_points = [self.player_score, self.computer_score]
@@ -46,10 +48,12 @@ class Scoreboard():
             PLAYERS[i].setpos(POSITIONS[i])
             PLAYERS[i].write(self.all_points[i], align=ALIGNMENT, font=FONT)
 
+
     def update_points(self):
         for i in range(2):
             PLAYERS[i].clear()
             PLAYERS[i].write(self.all_points[i], align=ALIGNMENT, font=FONT)
+
 
     def screen_update(self):
         if self.player_score != self.all_points[0] or self.computer_score != self.all_points[1]:
@@ -57,13 +61,16 @@ class Scoreboard():
             self.update_points()
         return self.scoreboard.update()
 
+
     def control_paddle(self, player_paddle):
         self.scoreboard.listen()
         self.scoreboard.onkeypress(key="Up", fun=player_paddle.move_up)
         self.scoreboard.onkeypress(key="Down", fun=player_paddle.move_down)
 
+
     def exitonclick(self):
         return self.scoreboard.exitonclick()
+
 
     def game_result(self):
         result = Turtle()
@@ -75,6 +82,7 @@ class Scoreboard():
             result.write(f"Game over. {PLAYERS_NAME[1]} wins.", align=ALIGNMENT, font=FONT)
         else:
             result.write(f"Game over. {PLAYERS_NAME[0]} wins.", align=ALIGNMENT, font=FONT)
+
 
     def final_result(self):
         self.game_result()
