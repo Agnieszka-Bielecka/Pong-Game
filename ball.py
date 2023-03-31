@@ -1,4 +1,4 @@
-from turtle import Turtle
+from turtle import Turtle, Screen
 
 WIDTH = 400
 HEIGHT = 300
@@ -8,10 +8,9 @@ class Ball(Turtle):
     def __init__(self):
         super().__init__()
         self.create_ball()
-
-        # TODO: improve SPEED, after every round ball should be faster
         self.x_speed = SPEED
         self.y_speed = SPEED
+        self.speed_multiplier = 1.0
         self.wall_coll = False
 
     def create_ball(self):
@@ -35,14 +34,15 @@ class Ball(Turtle):
             self.x_speed = -self.x_speed
             return True
 
+    def increase_speed(self):
+        self.speed_multiplier += 0.1
+
     def ball_move(self):
-        self.ball.goto(self.ball.xcor() + self.x_speed, self.ball.ycor() + self.y_speed)
+        self.ball.goto(self.ball.xcor() + self.x_speed * self.speed_multiplier, self.ball.ycor() + self.y_speed * self.speed_multiplier)
         self.wall_collision()
 
     def reset_ball(self):
+        self.x_speed = SPEED
+        self.y_speed = SPEED
+        self.speed_multiplier += 0.1
         self.ball.setpos(0, 0)
-
-# TODO: repair ball_hide
-    def ball_hide(self):
-        self.ball.setpos(500, 500)
-
