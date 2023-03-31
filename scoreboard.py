@@ -1,7 +1,8 @@
 from turtle import Turtle, Screen
 
 PLAYERS = [None, None]
-POSITIONS = [(-50, 230), (50, 230)]
+PLAYERS_NAME = ["Player", "Computer"]
+POSITIONS = [(50, 230), (-50, 230)]
 ALIGNMENT = "center"
 FONT = ("Consolas", 40, "normal")
 
@@ -64,9 +65,18 @@ class Scoreboard():
     def exitonclick(self):
         return self.scoreboard.exitonclick()
 
-# TODO: add text to final_result in center of screen (who lose, who win)
+    def game_result(self):
+        result = Turtle()
+        result.color("white")
+        result.penup()
+        result.hideturtle()
+        result.setpos(0, 150)
+        if self.player_score > self.computer_score:
+            result.write(f"Game over. {PLAYERS_NAME[1]} wins.", align=ALIGNMENT, font=FONT)
+        else:
+            result.write(f"Game over. {PLAYERS_NAME[0]} wins.", align=ALIGNMENT, font=FONT)
+
     def final_result(self):
+        self.game_result()
         self.line.clear()
         self.line.color("black")
-
-
